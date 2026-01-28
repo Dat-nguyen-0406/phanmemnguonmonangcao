@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
 use App\Http\Middleware\CheckTimeAccess;
+use App\Http\Middleware\CheckAge;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('home');
@@ -14,11 +16,21 @@ Route::get('/login', [ProductsController::class, 'login'])
 
 Route::post('/checklogin', [ProductsController::class, 'checklogin'])->name('checklogin');
 
+// đăng ký
 Route::get('/SingIn', [AuthController::class, 'SingIn']);
 Route::post('/CheckSingIn', [AuthController::class, 'CheckSingIn'])->name('CheckSingIn');
 
+//tuổi
+Route::get('/age', function () {
+    return view('age');
+});
+Route::post('/save-age', function (Request $request) {
+    $age = $request->input('age');
+    session(['age' => $age]);
+    return 'Tuổi đã được lưu là: ' . $age . ' <br> <a href="'.route('products.index').'">Nhấn vào đây vào trang Products</a>';
+})->name('save.age');;
 
-Route::prefix('products')->middleware(CheckTimeAccess::class)->group(function () {
+Route::prefix('products')->middleware(CheckTimeAccess::class,CheckAge::class)->group(function () {
 
  Route::controller(ProductsController::class)->group(function () {
     Route::get('/', 'index') ->name('products.index');
