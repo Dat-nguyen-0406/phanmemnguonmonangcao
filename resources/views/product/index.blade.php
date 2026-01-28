@@ -1,8 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-<h1>Đây là trang sản phẩm</h1>
+<h1>{{ $title }}</h1>
 
+<table>
+    <tr>
+        
+        <th>ID</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá</th>
+    </tr>
+    @foreach ($products as $product)
+        <tr>
+            <td>{{ $product['id'] }}</td>
+            <td>{{ $product['name'] }}</td>
+            <td>{{ number_format($product['price']) }} VND</td>
+        </tr>
+    @endforeach
+</table>
 <table class="table">
     <thead style="background-color: aqua;">
         <tr>

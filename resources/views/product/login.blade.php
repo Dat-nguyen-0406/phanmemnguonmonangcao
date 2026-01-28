@@ -1,33 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<body>
-    <form action="{{ route('products.add') }}" method="POST">
-    @csrf 
-    <div class="form-group">
-        <label for="name">Tên sản phẩm:</label>
-        <input type="text" id="name" name="name" placeholder="Nhập tên sản phẩm..." required>
-    </div>
-
-    <div class="form-group">
-        <label for="price">Giá sản phẩm (VNĐ):</label>
-        <input type="number" id="price" name="price" placeholder="Ví dụ: 200000" required>
-    </div>
-
-    <button type="submit" class="btn-submit">Lưu Sản Phẩm</button>
-</form>
-
-
-    <a href ="{{ route('products.index') }}">Quay lại danh sách sản phẩm</a>
-</body>
-
-    <head>
+<head>
     <meta charset="UTF-8">
-    <title>Thêm sản phẩm mới</title>
+    <title>Đăng nhập</title>
     <style>
-       
-       
-
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
@@ -45,8 +21,7 @@
         }
 
         input[type="text"], 
-        input[type="number"], 
-        textarea {
+        input[type="password"] {
             width: 100%;
             padding: 10px;
             border: 1px solid black; 
@@ -68,8 +43,23 @@
         .btn-submit:hover {
             background-color: #45a049;
         }
-
-        
     </style>
 </head>
+<body>
+    <form action="{{ route('checklogin') }}" method="POST">
+    @csrf
+    <div class="form-group">
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập..." required>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu..." required>
+    </div>
+
+    <button type="submit" class="btn-submit">Đăng nhập</button>
+</form>
+
+</body>
 </html>
