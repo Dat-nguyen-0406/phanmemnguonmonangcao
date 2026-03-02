@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware; 
 use Illuminate\Routing\Controllers\Middleware;
 use App\Http\Middleware\CheckTimeAccess;
-
+use App\Models\Product;
 
 class ProductsController implements HasMiddleware 
 {
@@ -22,31 +22,22 @@ class ProductsController implements HasMiddleware
 
     public function index()
     {
-        $title = "product list";
-       
-        return view('product.index',['title' => $title, 
-        'products' => [
-            ['id'=>1,'name'=>'san pham 1','price'=>1000],
-            ['id'=>2,'name'=>'san pham 2','price'=>2000],
-            ['id'=>3,'name'=>'san pham 3','price'=>3000],
-        ]]); 
+    $products = Product::all(); // Lấy tất cả sản phẩm từ DB
+    return view('admin.product.index', compact('products'));
     }
+
     public function GetDetail(string $id = null)
     {
-        return view('product.detail', ['id' => $id]);
+        return view('admin.product.detail', ['id' => $id]);
     }
     public function Add()
     {
-        return view('product.add');
+        return view('admin.product.add');
     }
 
-    public function store(Request $request)
-    {
-        $request->all();
-    }
 
     public function login(){
-        return view('product.login');
+        return view('admin.product.login');
     }
      public function checkLogin(Request $request)
     {
@@ -56,4 +47,47 @@ class ProductsController implements HasMiddleware
             return "Login failed!";
         }
     }
+    public function store(Request $request)
+    {
+        //
+        $product = new Product;
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->save();
+        return redirect('/product');
+    }
+    public function show(string $id)
+    {
+        //
+        $product = Product::find($id);
+        return view('admin.product.detail', ['product' => $product]);
+    }
+     public function edit(string $id)
+    {
+        //
+        $product = Product::find($id);
+        return view('admin.product.edit', ['product' => $product]);
+    }
+    public function update(Request $request, string $id)
+    {
+        //
+        $product = Product::find($id);
+
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        
+        $product->save();
+        return redirect('/product');
+    }
+
+    public function destroy(string $id)
+    {
+        //
+        $product = Product::find($id);
+        $product->delete();
+        return redirect('/product');
+    }
+
 }

@@ -11,10 +11,10 @@ Route::get('/', function () {
     return view('home');
 })->name('home')   ;
 
-Route::get('/login', [ProductsController::class, 'login'])
+Route::get('/login', [AuthController::class, 'ShowLogIn'])
     ->middleware(CheckTimeAccess::class);
+Route::post('/login', [AuthController::class, 'CheckLogIn'])->name('CheckLogIn');
 
-Route::post('/checklogin', [ProductsController::class, 'checklogin'])->name('checklogin');
 
 // đăng ký
 Route::get('/SingIn', [AuthController::class, 'SingIn']);
@@ -30,7 +30,7 @@ Route::post('/save-age', function (Request $request) {
     return 'Tuổi đã được lưu là: ' . $age . ' <br> <a href="'.route('products.index').'">Nhấn vào đây vào trang Products</a>';
 })->name('save.age');;
 
-Route::prefix('products')->middleware(CheckTimeAccess::class,CheckAge::class)->group(function () {
+Route::prefix('product')->middleware([CheckTimeAccess::class , CheckAge::class])->group(function () {
 
  Route::controller(ProductsController::class)->group(function () {
     Route::get('/', 'index') ->name('products.index');
@@ -43,6 +43,20 @@ Route::prefix('products')->middleware(CheckTimeAccess::class,CheckAge::class)->g
 }); 
 
 
+
+Route::get('/admin', function () {
+    return view('layout.admin');
+})->name('layout.admin');
+
+Route::prefix('admin/category')->group(function () {
+    Route::get('/', function () {
+        return "Trang danh sách Category";
+    })->name('category.index');
+
+    Route::get('/add', function () {
+        return "Trang thêm Category";
+    })->name('category.add');
+});
 
 
 Route::prefix('sinhvien')->group(function(){

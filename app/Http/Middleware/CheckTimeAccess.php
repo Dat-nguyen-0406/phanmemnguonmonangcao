@@ -12,7 +12,7 @@ class CheckTimeAccess
     {
         $now = Carbon::now();
         $start = Carbon::createFromFormat('H:i:s', '00:00:00');
-        $end   = Carbon::createFromFormat('H:i:s', '17:00:00');
+        $end   = Carbon::createFromFormat('H:i:s', '23:00:00');
 
 
         if ($now->between($start, $end)) {
